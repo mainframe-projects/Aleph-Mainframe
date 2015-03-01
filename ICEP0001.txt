@@ -1,0 +1,132 @@
+      ***************************************************************** 
+      *                                                                 
+      ***************************************************************** 
+       IDENTIFICATION DIVISION.                                         
+      *                                                                 
+       PROGRAM-ID.   ICDP0001.                                          
+      *AUTHOR.       JULIO.CESAR.TORRES.                                
+      *DATE-WRITTEN. NOVEMBER 2014.                                     
+      *DATE-COMPILED.                                                   
+      *                                                                 
+       ENVIROMENENT DIVISION.                                           
+      *                                                                 
+       CONFIGURATION                     SECTION.                       
+      *                                                                 
+       DATA DIVISION.                                                   
+      *                                                                 
+       INPUT-OUTPUT                      SECTION.                       
+      *                                                                 
+      *                                                                 
+       WORKING-STORAGE                   SECTION.                       
+      *                                                                 
+       77  CTE-VES                       PIC X(006) VALUE 'VRS001'.     
+       77  ICDP0001                      PIC X(008) VALUE 'ICDP0001'.   
+      /                                                                 
+       LOCAL-STORAGE                     SECTION.                       
+      /                                                                 
+       01  VARIABLES.                                                   
+           05  DATE-HOUR-OBS.                                           
+               10  DATE-OBS.                                            
+                   15  DATE-OBS-SC       PIC  9(002) VALUE 20.          
+                   15  DATE-OBS-AA       PIC  9(002).                   
+                   15  DATE-OBS-MM       PIC  9(002).                   
+                   15  DATE-OBS-JJ       PIC  9(002).                   
+               10  HOUR-OBS.                                            
+                   15  HOUR-OBS-HH       PIC  9(002).                   
+                   15  HOUR-OBS-MM       PIC  9(002).                   
+                   15  HOUR-OBS-SS       PIC  9(002).                   
+           05  EXT-TEMP                  PIC S9(003)V9(002).            
+           05  INT-TEMP                  PIC S9(003)V9(002).            
+           05  UMID-AIR                  PIC  9(003)V9(002).            
+           05  PRESS-AIR                 PIC  9(005)V9(002).            
+           05  ALTITUDE                  PIC  9(006)V9(002).            
+           05  STMT-GLL                  PIC  X(040) VALUE SPACES.      
+      /                                                                 
+       01  FMTD-VARIABLES.                                              
+           05  FMTD-DATE-HOUR-OBS.                                      
+               10 FMTD-DATE-OBS.                                        
+                   15  FMTD-DATE-OBS-SC  PIC  9(002).                   
+                   15  FMTD-DATE-OBS-AA  PIC  9(002).                   
+                   15  FILLER            PIC  X(001) VALUE '-'.         
+                   15  FMTD-DATE-OBS-MM  PIC  9(002).                   
+                   15  FILLER            PIC  X(001) VALUE '-'.         
+                   15  FMTD-DATE-OBS-JJ  PIC  9(002).                   
+               10  FMTD-HOUR-OBS.                                       
+                   15  FMTD-HOUR-HH      PIC  9(002).                   
+                   15  FILLER            PIC  X(001) VALUE ':'.         
+                   15  FMTD-HOUR-MM      PIC  9(002).                   
+                   15  FILLER            PIC  X(001) VALUE ':'.         
+                   15  FMTD-HOUR-SS      PIC  9(002).                   
+      /                                                                 
+      *===================                                              
+       PROCEDURE DIVISION.                                              
+      *===================                                              
+      /                                                                 
+       000000-ROUTINE-PRINCIPALE         SECTION.                       
+      *--------------------------                                       
+      *                                                                 
+           100000-INITIALISATIONS.                                      
+      *                                                                 
+           200000-VALIDER-ENTREE.                                       
+      *                                                                 
+           300000-LIRE-FICHIER-ENTREE.                                  
+      *                                                                 
+           400000-ECRIRE-FICHIER-SORTIE.                                
+      *                                                                 
+           DISPLAY 'P0001: FIN NORMAL DE PROGRAMME.' .                  
+           GOBACK.                                                      
+      *                                                                 
+       000000-FIN.                                                      
+      *-----------                                                      
+           EXIT.                                                        
+      /                                                                 
+      *                                                                 
+       100000-INITIALISATIONS            SECTION.                       
+      *-----------------------                                          
+      *                                                                 
+       INITIALIZE                        ICDKRTN0.                      
+       INITIALIZE                        GGGZC000.                      
+       INITIALIZE                        ICEZC02A.                      
+       MOVE ZEROS                        TO GZC000-NB-MESS              
+                                            GZC000-COD-RTR.             
+      *                                                                 
+       100000-FIN.                                                      
+      *-----------                                                      
+           EXIT.                                                        
+      *                                                                 
+       200000-VALIDER-ENTREE             SECTION.                       
+      *----------------------                                           
+      * FAIT LA VALIDATION DES DONNEES D'ENTREE, EN ACCORDANCE AVEC LA  
+      * REGLE FONCTIONNELLE.                                            
+      *                                                                 
+           IF EXT-TEMP NOT IS NUMERIC                                   
+               DISPLAY 'EXT-TEMP IS INVALID.'                           
+               MOVE +001                 TO GZC000-COD-RTR              
+               MOVE ' '                  TO GCZ000-MESS(NB-MESS)        
+           END-IF.                                                      
+      *                                                                 
+           IF INT-TEMP NOT IS NUMERIC                                   
+               DISPLAY 'INT-TEMP IS INVALID'                            
+               MOVE +002                 TO GZC000-COD-RTR              
+               MOVE ' '                  TO GZC000-MESS(NB_MESS)        
+           END-IF.                                                      
+      *                                                                 
+           IF UMID-AIR NOT IS NUMERIC                                   
+               DISPLAY 'HUMIDITY IS INVALID'                            
+               MOVE +003                 TO GZC000-COD-RTR              
+               MOVE ' '                  TO GCZ000-MESS(NB-MESS)        
+           END-IF.                                                      
+      *                                                                 
+           IF PRESS-AIR NOT IS NUMERIC                                  
+               DISPLAY 'AIR PRESSURE IS INVALID. '                      
+               MOVE +004                 TO GZC000-COD-RTR              
+               MOVE ' '                  TO GZC000-MESS(MB-NESS)        
+           END-IF.                                                      
+      *                                                                 
+       200000-FIN.                                                      
+      *-----------                                                      
+           EXIT.                                                        
+      *                                                                 
+      ***************************************************************** 
+      *      F I N   D U   P R O G R A M M E   I C D P 0 0 0 1          
+      ***************************************************************** 

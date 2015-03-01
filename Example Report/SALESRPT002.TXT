@@ -1,0 +1,14 @@
+DATE:  11/11/2014           YEAR-TO DATE SALES REPORT                 PAGE:    1
+TIME:  01:44                                                          RPTP1000
+
+CUST                            SALES         SALES         CHANGE     CHANGE
+NUM    CUSTOMER NAME           THIS YTD      LAST YTD       AMOUNT    PERCENT
+
+12345  CARRER TRAINING CTR    12,345.67     22,222.22      9,876.55-    44.4-
+22222  HOMELITE TEXTRON CO    34,545.00          0.00     34,545.00    999.9
+55555  PILOT LIFE INS. CO.    10,000.00      1,000.00      9,000.00    900.0
+00111  DAUPHIN DEPOSIT BANK   14,099.00     19,930.00      5,831.00-    29.3-
+12121  GENERAL SERVICES CO.   11,444.00     11,059.56        384.44      3.5
+24680  INFO MANAGEMENT CO.    17,481.45     11,892.47      5,588.98     47.0
+
+                              99,915.12     66,104.25     33,810.87     51.1

@@ -1,0 +1,192 @@
+      ******************************************************************
+      * KEEP TRACK OF GPS SENTENCES,                                    
+      * ANALYSTE : TOJ03 - JULIO CESAR TORRES                           
+      * DATE     : 21 NOVEMBRE 2014                                     
+      ******************************************************************
+      *                                                                 
+      *========================                                         
+       IDENTIFICATION DIVISION.                                         
+      *========================                                         
+      *                                                                 
+       PROGRAM-ID. ICDP0000.                                            
+       AUTHOR. JULIO.CESAR.TORRES.                                      
+      *DATE-WRITTEN. NOV.2014.                                          
+      *DATE-COMPILED.                                                   
+      *                                                                 
+      *=====================                                            
+       ENVIRONMENT DIVISION.                                            
+      *=====================                                            
+      *                                                                 
+      *------------------------------                                   
+       CONFIGURATION         SECTION.                                   
+      *------------------------------                                   
+      *                                                                 
+       SPECIAL-NAMES.                                                   
+           DECIMAL-POINT IS COMMA.                                      
+      *                                                                 
+      *------------------------------                                   
+       INPUT-OUTPUT          SECTION.                                   
+      *------------------------------                                   
+       WORKING-STORAGE       SECTION.                                   
+      *------------------------------                                   
+      *                                                                 
+       77  ICEP0000                    PIC X(008) VALUE 'ICEP0000'.     
+       77  PGM-VERSION                 PIC 9(004) VALUE 0115.           
+      *                                                                 
+       01  NMEA-0183.                                                   
+           03  NMEA-0183-VRS           PIC X(010) VALUE '2.2.5'.        
+           03  NMEA-STMTS.                                              
+               05  NMEA-STMT-GLL       PIC X(080)                       
+                   VALUE 'GEOLOCALISATION LATITUDE/LONGITUDE'.          
+               05  NMEA-STMT-GCA       PIC X(080)                       
+                   VALUE 'ESSENTIAL FIX DATA'.                          
+      *                                                                 
+      * $GPGLL,9999.99,N,99999.99,W,225540,A,*FF                        
+      *                                                                 
+           03  NMEA-GLL.                                                
+               05  FILLER              PIC X(001) VALUE '$'.            
+               05  FILLER              PIC X(002) VALUE 'GP'.           
+               05  NMEA-STMT-GLL       PIC X(003) VALUE 'GLL'.          
+               05  FILLER              PIC X(001) VALUE ','.            
+               05  GLL-LAT.                                             
+                   07  GLL-LAT-DEG     PIC 99.                          
+                   07  GLL-LAT-MIN     PIC 99.                          
+                   07  FILLER          PIC X(001) VALUE '.'             
+                   77  GLL-LAT-SEG     PIC 99.                          
+               05  FILLER              PIC X(001) VALUE ','.            
+               05  GLL-LAT-COORD       PIC X(001).                      
+               05  FILLER              PIC X(001) VALUE ','.            
+                   88  GLL-COORD-NORTH            VALUE 'N'.            
+                   88  GLL-COORD-SOUTH            VALUE 'S'.            
+               05  FILLER              PIC X(001) VALUE ','.            
+               05  GLL-LON.                                             
+                   07  GLL-LON-DEG     PIC 999.                         
+                   07  GLL-LON-MIN     PIC 99.                          
+                   07  FILLER          PIC X(001) VALUE '.'.            
+               05  FILLER              PIC X(001) VALUE ','.            
+               05  GLL-LON-COORD   PIC X(001).                          
+               05  FILLER              PIC X(001) VALUE ','.            
+                   88  GLL-COORD-EAST             VALUE 'E'.            
+                   88  GLL-COORD-WEST             VALUE 'W'.            
+               05  FILLER              PIC X(001) VALUE ','.            
+               05  GLL-TIME-TAKEN.                                      
+                   07  GLL-TIME-HH     PIC 9(002).                      
+                   07  GLL-TIME-MM     PIC 9(002).                      
+                   07  GLL-TIME-SS     PIC 9(002).                      
+               05  FILLER              PIC X(001) VALUE ','.            
+               05  GLL-DATA-STAT       PIC X(001).                      
+               05  FILLER              PIC X(001) VALUE ','.            
+                   88  GLL-STAT-ACTIVE            VALUE 'A'.            
+                   88  GLL-STAT-VOID              VALUE 'V'.            
+               05  FILLER              PIC X(001) VALUE ','.            
+               05  GLL-CHECKSUM.                                        
+                   07 FILLER           PIC X(001) VALUE '*'.            
+                   07 GLL-HEX-CHECK    PIC 9(002).                      
+      *                                                                 
+      * $GPGCA,123519,4807.038,N,01131.000,E,1,08,0.9,545.4,M,          
+      *        46.9,M,,*47                                              
+      *                                                                 
+           03  NMEA-STMT-GCA.                                           
+               05  FILLER              PIC X(001) VALUE '$'.            
+               05  FILLER              PIC X(002) VALUE 'GP'.           
+               05  NMEA-STMT-GCA       PIC X(003) VALUE 'GCA'.          
+               05  FILLER              PIC X(001) VALUE ','.            
+               05  GCA-TIME-TAKEN.                                      
+                   07  GCA-TIME-HH     PIC 9(002).                      
+                   07  GCA-TIME-MM     PIC 9(002).                      
+                   07  GCA-TIME-SS     PIC 9(002).                      
+               05  FILLER              PIC X(001) VALUE ','.            
+               05  GCA-LAT.                                             
+                   07  GCA-LAT-DEG     PIC 9(002).                      
+                   07  GCA-LAT-MIN     PIC 9(002).                      
+                   07  FILLER                     VALUE '.'.            
+                   07  GCA-LAT-SEG     PIC 9(003).                      
+               05  FILLER              PIC X(001) VALUE ','.            
+               05  GCA-LAT-COORD       PIC X(001).                      
+                   88  GCA-COORD-NORTH            VALUE 'N'.            
+                   88  GCA-COORD-SOUTH            VALUE 'S'.            
+               05  FILLER              PIC X(001) VALUE ','.            
+               05  GCA-LON.                                             
+                   07  GCA-LON-DEG     PIC 9(003).                      
+                   07  GCA-LON-MIN     PIC 9(002).                      
+                   07  FILLER          PIC X(001) VALUE '.'.            
+                   07  GCA-LON-SEG     PIC 9(003).                      
+               05  FILLER              PIC X(001) VALUE ','.            
+               05  GCA-LON-COORD       PIC X(001).                      
+                   88  GCA-COORD-EAST             VALUE 'E'.            
+                   88  GCA-COORD-WEST             VALUE 'W'.            
+               05  FILLER              PIC X(001) VALUE ','.            
+               05  GCA-FIX-QUALITY     PIC 9(001).                      
+                   88  GCA-FIX-INVD               VALUE +0.             
+                   88  GCA-FIX-GPS-FIX            VALUE +1.             
+                   88  GCA-FIX-DGPS               VALUE +2.             
+                   88  GCA-FIX-PPS                VALUE +3.             
+                   88  GCA-FIX-RT-KINEMATIC       VALUE +4.             
+                   88  GCA-FIX-FLOAT-RTK          VALUE +5.             
+                   88  GCA-FIX-ESTIAMTED          VALUE +6.             
+                   88  GCA-FIX-MANUAL-INPUT       VALUE +7.             
+                   88  GCA-FIX-SIMULATION         VALUE +8.             
+               05  FILLER              PIC X(001) VALUE ','.            
+               05  GCA-NUM-SAT-TRK     PIC 9(002).                      
+               05  FILLER              PIC X(001) VALUE ','.            
+               05  GCA-HORZ-DILTN-POS  PIC 9(001)V9(001).               
+               05  FILLER              PIC X(001) VALUE ','.            
+               05  GCA-ALT-MT-SEA      PIC 9(003)V9(001).               
+               05  FILLER              PIC X(001) VALUE ','.            
+               05  GCA-ALT-MT-SUFX     PIC X(001) VALUE 'M'.            
+               05  FILLER              PIC X(001) VALUE ','.            
+               05  GCA-HEGT-GEOID      PIC 9(003)V9(002).               
+               05  FILLER              PIC X(001) VALUE ','.            
+               05  GCA-CHECKSUM.                                        
+                   07 FILLER           PIC X(001) VALUE '*'.            
+                   07 GCA-HEX-CHECK    PIC 9(002).                      
+      *                                                                 
+      *------------------------------------------                       
+       LINKAGE                           SECTION.                       
+      *------------------------------------------                       
+      *                                                                 
+       01  LKS-P0000.                                                   
+           05  P0000-AREA-SIZE         PIC 9(99999).                    
+           05  P0000-AREA              PIC X(99999).                    
+      *                                                                 
+      *==================                                               
+       PROCEDURE DIVISION      USING     LKS-P0000.                     
+      *==================                                               
+      *                                                                 
+      *------------------------------------------                       
+       000000-DIRECTEUR                  SECTION.                       
+      *------------------------------------------                       
+      *                                                                 
+           DISPLAY '0000:DEBUT DIRECTEUR SECTION'.                      
+      *                                                                 
+           PERFORM 100000-INITIALISATION.                               
+      *                                                                 
+           PERFORM 200000-VALIDER-ENTREE.                               
+      *                                                                 
+           PERFORM 300000-ANALISER-STATEMENT.                           
+      *                                                                 
+           PERFORM 400000-GENERER-SORTIE.                               
+      *                                                                 
+           DISPLAY '000000:FIN DIRECTEUR SECTION'.                      
+      *                                                                 
+           GOBACK.                                                      
+      *                                                                 
+      *-----------                                                      
+       000000-FIN.                                                      
+      *-----------                                                      
+           EXIT.                                                        
+      *                                                                 
+      *------------------------------------------                       
+       100000-INITIALISATION             SECTION.                       
+      *------------------------------------------                       
+      *                                                                 
+      *-----------                                                      
+       100000-FIN.                                                      
+      *-----------                                                      
+           EXIT.                                                        
+      *                                                                 
+                                                                        
+                                                                        
+                                                                        
+                                                                        
+                                                                        

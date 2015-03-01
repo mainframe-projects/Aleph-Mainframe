@@ -1,0 +1,286 @@
+       IDENTIFICATION DIVISION.                                         
+      ******************************************************************
+      *   COPYRIGHT, SOCIETE EC, 1997                                  *
+      *                                                                *
+      *    "TOUS DROITS  RESERVES. IL EST  INTERDIT ENTRE AUTRES,      *
+      *    DE  REPRODUIRE OU DE  COMMUNIQUER EN TOUT OU EN PARTIE      *
+      *    L'OEUVRE SOUS QUELQUE FORME OU PAR QUELQUE PROCEDE QUE      *
+      *    CE SOIT, SANS AVOIR OBTENU AU PREALABLE L'AUTORISATION      *
+      *    ECRITE DE LA SOCIETE"                                       *
+      ******************************************************************
+                                                                        
+       PROGRAM-ID.   ICEI002B VERSION 1001 INITIAL PROGRAM.             
+                                                                        
+       AUTHOR.       JULIO.CESAR.TORRES.                                
+                                                                        
+       DATE-WRITTEN. NOVEMBER 2014.                                     
+                                                                        
+      ******************************************************************
+      *                                                                *
+      *      PROGRAMME DRIVER                                          *
+      *                                                                *
+      ******************************************************************
+      *                                                                *
+      *      TITRE  - PROGRAMME DRIVER ICEI002B                        *
+      *                                                                *
+      *      BUT    - CE PROGRAMME EST UN PROGRAMME DRIVER.            *
+      *               IL SERT A TESTER LES DONNES DE RETOUR            *
+      *               DU PROGRAMME ICEX002A.                           *
+      *                                                                *
+      *                                                                *
+      *   - DOSSIER FONCTIONNEL:                                       *
+      *                                                                *
+      *   - PGM APPELANT  : REGLE D'AFFAIRE                            *
+      *                                                                *
+      ******************************************************************
+      *                                                                *
+      *      ZONES DE COMMUNICATION UTILISEES                          *
+      *         GGGZC000     ZONE COMMUNE UTL                          *
+      *         ICEZC02A     ZONE ENTREE ICEX002A                      *
+      *         ICEZC02B     ZONE ENTREE PGM ICEX002A                  *
+      *         ICEZC02C     ZONE SORTIE PGM ICEX002A                  *
+      *                                                                *
+      *      ZONES DE VARIABLES                                        *
+      *         GGGZV001     ZONE DE PROBLEME TECHNIQUE                *
+      *                                                                *
+      *      STORAGES                                                  *
+      *         GGGISA01                                               *
+      *                                                                *
+      **************************************************************** *
+      *                                                                *
+      *        ANALYSTE FONCTIONNEL  : MICHELLE PICARD                 *
+      *        PROGRAMMEUR           : JULIO CESAR TORRES              *
+      *                                                                *
+      **************************************************************** *
+      * DATE         :                                                 *
+      * MODIFICATION :                                                 *
+      * ANALYSTE     :                                                 *
+      * TECHNICIEN   :                                                 *
+      ******************************************************************
+      /                                                                 
+      *=====================                                            
+       ENVIRONMENT DIVISION.                                            
+      *=====================                                            
+      *                                                                 
+       CONFIGURATION           SECTION.                                 
+      *                                                                 
+      *SOURCE-COMPUTER. IBM-370.                                        
+       SOURCE-COMPUTER. IBM-370 WITH DEBUGGING MODE.                    
+      *                                                                 
+       IDMS-CONTROL            SECTION.                                 
+      *                                                                 
+       PROTOCOL.               MODE IS IDMS-DC DEBUG                    
+                               IDMS-RECORDS    MANUAL.                  
+      /                                                                 
+      *==============                                                   
+       DATA DIVISION.                                                   
+      *==============                                                   
+      *                                                                 
+       SCHEMA                  SECTION.                                 
+      *                                                                 
+       DB ICEIV01              WITHIN GGGISA1.                          
+      *                                                                 
+       MAP                     SECTION.                                 
+      /                                                                 
+       WORKING-STORAGE         SECTION.                                 
+      *                                                                 
+      *---------------------------------------------------------------- 
+      *                L E S   C O N S T A N T E S                      
+      *---------------------------------------------------------------- 
+      *                                                                 
+       01  FILLER                        PIC X(032) VALUE               
+           '%%%%%%%% LES CONSTANTES %%%%%%%%'                           
+       01  LES-CONSTANTES.                                              
+           05  VAR-INPUT.                                               
+               10  VAR-NO-LICNC-PERMI    PIC 9(005) VALUE ZEROES.       
+               10  VAR-PARAM-APPL        PIC X(003) VALUE SPACES.       
+               10  VAR-TYP-TRAIT         PIC X(002) VALUE SPACES.       
+               10  VAR-INPUT-FIN         PIC X(001) VALUE ' '.          
+                                                                        
+           05  VAR-LONG                  PIC 9(005).                    
+           05  VAR-NOM-PGM               PIC X(008) VALUE 'ICEI002B'.   
+           05  IND1                      PIC 9(002).                    
+      *                                                                 
+       01  LES-MESSAGES                  PIC X(016) VALUE               
+                                         'LES MESSAGES'.                
+       01  VAR-MESSAGE-01.                                              
+           05  FILLER                    PIC X(080) VALUE SPACES.       
+       01  LES-LIGNES                    PIC X(016) VALUE               
+                                         'LES LIGNES'.                  
+       01  LIGNE-ENTETE.                                                
+           05  FILLER                    PIC X(080) VALUE               
+           'ENTREZ L''INFORMATION REQUISE: '.                           
+      *                                                                 
+      *---------------------------------------------------------------- 
+      *           Z O N E S   D E   C O M M U N I C A T I O N           
+      *---------------------------------------------------------------- 
+      *                                                                 
+       01  FILLER                        PIC X(032) VALUE               
+           'ZONE GGGZC000'.                                             
+                                                                        
+           COPY IDMS GGGZC000 VERSION 01.                               
+           05  GZC000-FIN-SCR            PIC X.                         
+      *                                                                 
+       01  FILLER                        PIC X(032) VALUE               
+           'ZONE GGGZV001'.                                             
+                                                                        
+           COPY IDMS GGGZV001 VERSION 01.                               
+      *                                                                 
+       01  FILLER                        PIC X(032) VALUE               
+           ' ZONE ICEZC02A'.                                            
+                                                                        
+           COPY IDMS ICEZC02A VERSION 01.                               
+      *                                                                 
+       01  FILLER                        PIC X(032) VALUE               
+           ' ZONE ICEZC02B'.                                            
+                                                                        
+           COPY IDMS ICEZC02B VERSION 01.                               
+      *                                                                 
+       01  FILLER                        PIC X(032) VALUE               
+           ' ZONE ICEZC02C'.                                            
+                                                                        
+           COPY IDMS ICEZC02C VERSION 01.                               
+      *                                                                 
+       01  FILLER                        PIC X(010) VALUE 'SUB-CTRL'.   
+           COPY IDMS SUBSCHEMA-CTRL.                                    
+      *                                                                 
+       01  FILLER                        PIC X(010) VALUE 'SUB-NAMES'.  
+           COPY IDMS SUBSCHEMA-NAMES.                                   
+      *                                                                 
+      *===================                                              
+       PROCEDURE DIVISION.                                              
+      *===================                                              
+      *                                                                 
+       000000-SECTION-DIRECTRICE         SECTION.                       
+      *-------------------------                                        
+      *                                                                 
+           PERFORM             100000-INITIALISATIONS.                  
+           PERFORM             300000-LINK-ICEI002A.                    
+           PERFORM             500000-AFFICHER-DONNEES.                 
+      *                                                                 
+           FINISH TASK.                                                 
+           DC RETURN.                                                   
+      *                                                                 
+       000000-FIN.                                                      
+           EXIT.                                                        
+      *                                                                 
+       100000-INIITIALISATIONS           SECTION.                       
+      *-----------------------                                          
+      *                                                                 
+           BIND RUN-UNIT.                                               
+      *                                                                 
+           READY GGGIR98-SERIFR          USAGE-MODE IS RETRIEVAL.       
+           READY GGGIR56-INTRV           USAGE-MODE IS RETRIEVAL.       
+      *                                                                 
+           INITIALIZE                    GGGZC000.                      
+           INITIALIZE                    ICEZC02A.                      
+      *                                                                 
+           MOVE 'ICEID002'               TO GZC000-NOM-PGM-APLAN.       
+      *                                                                 
+           MOVE ZERO                     TO GZC000-NB-MESS              
+                                            GZC000-COD-RTR.             
+      *                                                                 
+           SET ABEND EXIT ON PROGRAM 'GUT001D'.                         
+      *                                                                 
+           PERFORM 110000-LIRE-DONNEES.                                 
+      *                                                                 
+       100000-FIN.                                                      
+      *-----------                                                      
+           EXIT.                                                        
+      *                                                                 
+       110000-LIRE-DONNEES               SECTION.                       
+      *-------------------                                              
+      *                                                                 
+           WRITE                         LINE TO TERMINAL               
+                                         NOWAIT                         
+                                         FROM LIGNE-ENTETE              
+                                         LENGTH 80.                     
+      *                                                                 
+           READ LINE                     FROM TERMINAL                  
+                                         INTO-VAR-INPUT                 
+                                         TO VAR-INPUT-FIN.              
+      *                                                                 
+           END LINE TERMINAL SESSION.                                   
+      *                                                                 
+       110000-FIN.                                                      
+      *-----------                                                      
+           EXIT.                                                        
+      *                                                                 
+       300000-LINK-ICEI002A              SECTION.                       
+      *--------------------                                             
+      *                                                                 
+           MOVE VAR-NO-LICNC-PERMI       TO CZC02A-NO-LICNC-PERMI.      
+           MOVE VAR-PARAM-APPL           TO CZC02A-PARAM-APPL.          
+           MOVE VAR-TYP-TRAIT            TO CZC02A-TYP-TRAIT.           
+      *                                                                 
+           TRANSFER CONTROL              TO 'ICEX002A' LINK             
+                                         USING GGGZC000                 
+                                               ICEZC02A                 
+                                               ICEZC02B                 
+                                               ICEZC02C                 
+                                               SUBSCHEMA-CTRL.          
+      *                                                                 
+       300000-FIN.                                                      
+      *-----------                                                      
+           EXIT.                                                        
+      *                                                                 
+       500000-AFFICHER-DONNEES           SECTION.                       
+      *-----------------------                                          
+      *                                                                 
+           WRITE LINE                    TO TERMINAL                    
+                                         NOWAIT                         
+                                         FROM GZC000-COD-RTR            
+                                         LENGTH 2.                      
+                                                                        
+           MOVE LENGTH OF ICEZC02A       TO VAR-LONG.                   
+           WRITE LINE                    TO TERMINAL                    
+                                         NOWAIT                         
+                                         FROM ICEZC02A                  
+                                         LENGTH VAR-LONG.               
+                                                                        
+           MOVE LENGTH OF ICEZC02B       TO VAR-LONG.                   
+           WRITE LINE                    TO TERMINAL                    
+                                         NOWAIT                         
+                                         FROM ICEZC02B                  
+                                         LENGTH VAR-LONG.               
+                                                                        
+           MOVE LENGTH OF ICEZC02C       TO VAR-LONG.                   
+           WRITE LINE                    TO TERMINAL                    
+                                         NOWAIT                         
+                                         FROM ICEZC02C                  
+                                         LENGTH VAR-LONG.               
+                                                                        
+      *                                                                 
+       500000-FIN.                                                      
+      *-----------                                                      
+           EXIT.                                                        
+      *                                                                 
+       IDMS STATUS                       SECTION.                       
+      *------------                                                     
+                                                                        
+           IF GZC000-COD-RTR             = 99                           
+               ABEND CODE                GZC000-COD-RTR                 
+                                         ON ANY STATUS                  
+                                            NEXT SENTENCE               
+           ELSE                                                         
+               IF ANY-ERROR-STATUS                                      
+                   MOVE 1                TO GZC000-NB-MESS              
+                   MOVE 'GGGM511S'       TO GZC000-GRO-NO-MESS          
+                                           (GZC000-NM-MESS)             
+                   MOVE 99               TO GZC000-COD-RTR              
+                   MOVE DML-SEQUENCE     TO GZV001-DML-SEQ              
+                   MOVE ERROR-STATUS     TO GZV001-ERROR-STATUS         
+                                           (GZC000-NB-MESS)             
+                   ABEND CODE               GZC000-COD-RTR              
+                                            ON ANY STATUS               
+                                               NEXT SENTENCE            
+               END-IF                                                   
+           END-IF.                                                      
+      *                                                                 
+       IDMS-EXIT.                                                       
+      *----------                                                       
+           EXIT.                                                        
+      *                                                                 
+      ***************************************************************** 
+      *        F I N   D U   P R O G R A M M E   I C E I 0 0 2 B      * 
+      ***************************************************************** 
