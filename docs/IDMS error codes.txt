@@ -1,0 +1,239 @@
+IDMS error status codes are 4 characters. The first two are called major, the second two
+are called minor.
+
+MAJOR CODES
+
+Code  Database Function
+
+00    Any DML statement
+01    FINISH
+02    ERASE
+03    FIND/OBTAIN
+05    GET
+06    KEEP
+07    CONNECT
+08    MODIFY
+09    READY
+11    DISCONNECT
+12    STORE
+14    BIND
+15    ACCEPT
+16    IF
+17    RETURN
+18    COMMIT
+19    ROLLBACK
+20    LRF Request
+
+MINOR CODES
+
+Code  Database Function Status
+
+00    Combined with a major code of 00, this code indicates successful completion 
+      of the DML operation. Combined with a non-zero major code, this code 
+      indicates that the DML operation was not completed successfully, due to central
+      version causes, such as time-outs and program checks.
+
+01    An area has not been readied. When this code is combined with a major code 
+      of 16, an IF operation has resulted in a valid false condition.
+
+02    Either the db-key used with a FIND/OBTAIN DB-KEY statement or the direct
+      db-key suggested for a STORE is not within the page range for the specified
+      record name.
+
+04    The occurrence count of a variably occurring element has been specified as
+      either less than zero or greater than the maximum number of occurrences 
+      defined in the control element.
+
+05    The specified DML function would have violated a duplicates-not-allowed
+      option for a CALC, sorted or index set.
+
+06    No currency has been established for the named record, set or area.
+
+07    Either the end of a set, area, or index has been reached or the set is empty.
+
+08    Either the specified record, set, procedure, or LR verb is not in the
+      subschema or the specified record is not a member of the set.
+
+09    The area has been readied with an incorrect usage mode.
+
+10    An existing access restriction or subschema usage prohibits execution of
+      the specified DML specification. For the LRF users, the subschema in use
+      allows access to database records only. For SPF users, this code may also
+      indicate improper use of the ERASE statement. Commbined with a major code
+      of 00, this code means the program has attempted to access a database
+      record, but the subschema in use allows access to logical records only.
+
+11    The record cannot be stored in the specified area due to insufficient space.
+
+12    There is no db-key for the record to be stored. This is a system internal
+      error and should be reported.
+
+13    A current record of run unit has not been established or has been 
+      nullified by a previous ERASE statement.
+
+14    The CONNECT statement cannot be executed because the requested record
+      has been defined as a mandatory automatic member of the set.
+
+15    The DISCONNECT statement cannot be executed because the requested record
+      has been defined as a mandatory automatic member of the set.
+
+16    The record cannot be connected to a set of which it is already a member.
+
+18    The record has not been bound.
+
+20    The current record is not the same type as the specified record name.
+
+21    Not all areas being used have been readied in the correct usage mode.
+
+22    The record name specified is not currently a member of the set name
+      specified.
+
+23    The area name specified is either not in the subschema or not an extent
+      area; or the record name specified has not been defined within the area
+      name specified.
+
+25    No currency has been established for the named set.
+
+26    Either no duplicates exist for the named record or the record name or
+      SPF index entry cannot be found.
+
+28    The run unit has attempted to ready an area that has been readied
+      previously.
+
+29    The run unit has attempted to place a lock on a record that is locked
+      already by another run unit. A deadlock results and the run unit is
+      aborted.
+
+30    An attempt has been made to erase the owner record of a non-empty set.
+
+31    The retrieval statement format conflicts with the record's location
+      mode.
+
+32    An attempt to retrieve a CALC/DUPLICATE record was unsuccessful; the
+      value of the CALC field in variable storage is not equal to the value
+      of the CALC control element in the current record of run unit.
+
+33    At least on set in which the record participates has not been included
+      in the subschema.
+
+40    The WHERE clause in an OBTAIN NEXT logical-record request is inconsistent
+      with a previous OBTAIN FIRST or OBTAIN NEXT command for the same record.
+      Previously specified criteria, such as reference to a key field, has 
+      been changed. A path status of LR-ERROR is returned to the LRC block.
+
+41    The subschema contains no path that matches the WHERE clause in a 
+      logical-record request. A path status of LR-ERROR is returned to the 
+      LRC block.
+
+42    An ON clause included in the path by the DBA specified return of the
+      LR-ERROR path status to the LRC block; an error has occurred while
+      processing the LRF request.
+
+43    A program check has been recognized during evaluation of a WHERE clause;
+      the program check indicates that either a WHERE clause has specified
+      comparison of a packed decimal field to an unpacked non-numeric data
+      field, or data in variable storage or a database record does not conform
+      to its description. A path status of LR-ERROR is returned to the 
+      LRC block unless the DBA has included an ON clause to override this action
+      in the path.
+
+44    The WHERE clause in a logical-record request does not supply a key
+      element (sort key, CALC key or db-key) expected by the path. A path 
+      status of LR-ERROR is returned to the LRC block.
+
+45    During evaluation of a WHERE clause, a program check has been recognized
+      because a subscript value is neither greater than zero nor less than 
+      its maximum allowed value plus one. A path status of LR-ERROR is returned 
+      to the LRC block unless the DBA has included an ON clause to override this
+      action in the path.
+
+46    A program check has revealed an arithmetic exception (for example:
+      overflow, underflow, significance, divide) during evaluation of a
+      WHERE clause. A path status of LR-ERROR is returned to the LRC block 
+      unless the DBA has included an ON clause to override this action
+      in the path.
+
+53    The subschema definition of an indexed set does not match the indexed
+      set's physical structure in the database.
+
+54    Either the prefix length of an SR51 record is less than zero or the
+      data length is less than or equal to zero.
+
+55    An invalid length has been defined for a variable length record.
+
+56    An insufficient amount of memory to accomodate the IDMS/R compression/
+      decompression routines is available.
+
+60    A record occurrence type is inconsistent with the set named in the 
+      ERROR-SET field in the IDMS communication block. This code usually
+      indicates a broken chain.
+
+61    No record can be found for an internal db-key. This code usually
+      indicates a broken chain.
+
+62    A system-generated db-key points to a record occurrence, but no
+      record with that db-key can be found. This code usually indicates
+      a broken chain.
+
+63    The DBMS cannot interpret the DML function to be performed. When
+      combined with a major code of 00, this means invalid function
+      parameters have been passed on the call to the DBMS. For LRF users,
+      a WHERE clause includes a keyword that is longer than the 32
+      characters allowed.
+
+64    The record cannot be found; the CALC control element has not been
+      defined properly in the subschema.
+
+65    The database page read was not the page requested.
+
+66    The area specified is not avaiilable for update.
+
+67    The subschema invoked does not match the subschema object tables.
+
+68    The CICS interface was not started.
+
+69    a BIND RUN-UNIT may not have been issued; the CV may be inactive
+      or not accepting new run-units; or the connection with the CV may
+      have been broken due to time-out or other factors. When combined
+      with a major code of 00, this code means the program has been
+      disconnected from the DBMS.
+
+70    The database or journal file will not ready properly.
+
+71    The page range for the area being readied or the page range
+      requested cannot found in the DMCL.
+
+72    There is insufficient memory to dynamically load a subschema or
+      database procedure.
+
+73    A CV run-unit will exceed the max. users value specified at system
+      generation.
+
+74    The dynamic load of a module has failed. If operating on the CV, a
+      subschema or database procedure either was not found in the data
+      dictionary or the load (core image) library or, if loaded, will
+      exceed the number of subschema and the database procedures provided
+      for at system generation.
+
+75    A read error has occurred.
+
+76    A write error has occurred.
+
+77    The run-unit has not been bound or has been bound twice. When
+      combined with a major code of 00, this code means either the program
+      is no longer signed on to the subschema or the variable subschema
+      tables have been overwritten.
+
+78    An area wait deadlock has occurred.
+
+79    The run-unit has requested more db-key locks than are available to
+      the system.
+
+80    The target node is either not active or has been disabled from the
+      DDS configuration.
+
+81    The database name specified is not known to the CV.
+
+82    The subschema is not valid under the specified database.
+
+83    An error has occurred in accessing native VSAM data sets.
