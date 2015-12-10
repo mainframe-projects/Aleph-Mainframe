@@ -1,0 +1,7 @@
+*** SCL FOR PROGRAM UPGRADE (DEV -> PROD) 
+SET STOPRC 16 .                                              
+MOVE ELEMENT 'ICDP0001'                                      
+  FROM ENVIRONMENT 'DEVELOP' SYSTEM 'ICD' SUBSYSTEM 'TESTFONT'
+    TYPE 'PIDMSCB3' STAGE U                                  
+  OPTIONS CCID 'ICDTEST'                                      
+ .
