@@ -1,0 +1,8 @@
+*** SCL FOR PROGRAM RETRIEVAL *** 
+SET STOPRC 16 .                                                  
+RETRIEVE ELEMENT 'ICDP0001'                                      
+  FROM ENVIRONMENT 'PROD' SYSTEM 'ICD' SUBSYSTEM 'TESTFONT'        
+    TYPE 'PIDMSCB3' STAGE P                                      
+  TO DSNAME 'DSD.STD.TESTFONT'                              
+  OPTIONS CCID 'ICDTEST' OVERRIDE SIGNOUT REPLACE NOSEARCH        
+ . 
