@@ -1,0 +1,8 @@
+*** SCL FOR PROGRAM COMPILATION ***
+SET STOPRC 16 .                                                   
+ADD ELEMENT 'ICDP0001'                                            
+    FROM DSNAME 'DSD.STD.TESTFONT'                           
+    TO   ENVIRONMENT 'DEVELOP' SYSTEM 'ICD' SUBSYSTEM 'TESTFONT'       
+      TYPE 'PIDMSCB3'                                             
+    OPTIONS CCID 'ICDTEST' OVERRIDE SIGNOUT UPDATE                 
+ .   
