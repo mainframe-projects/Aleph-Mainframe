@@ -69,6 +69,10 @@
 !  PERIODE,  AFIN DE GERER SI LA PERIODE EST OUVERTE OU FERMEE   *              
 !            ON DOIT PASSER PAR LE STATUT DE LA PERIODE          *              
 !*****************************************************************              
+!* 2015-12-08 - JULIO CESAR TORRES                               *              
+!* DDS-2596                                                      *              
+!*           SUPPRIMER LES SOMMES A RECUPERER                    *              
+!*****************************************************************              
 !******************************************************************             
 !   MODULE  PRINCIPAL                                             *             
 !******************************************************************             
@@ -112,8 +116,8 @@ DEFINE  SUBROUTINE INITZONE.
                         (FZV408-NB-AGENT-SESSN).                                
       MOVE ZEROES   TO  FZV408-GRP-SESSN-CAISS                                  
                         (FZV408-NB-AGENT-SESSN).                                
-      MOVE SPACES   TO  FZV408-INDIC-ENCAI-RECPR                                
-                        (FZV408-NB-AGENT-SESSN).                                
+!     MOVE SPACES   TO  FZV408-INDIC-ENCAI-RECPR                                
+!                       (FZV408-NB-AGENT-SESSN).                                
       ADD 1         TO  FZV408-NB-AGENT-SESSN.                                  
    END.                                                                         
 !                                                                               
@@ -164,8 +168,8 @@ DEFINE  SUBROUTINE INITZONE.
                                 (FZV408-INDIC-AGENT-SESSN-MAP)                  
            FE213A-TOTAL-ECART-CAISS                                             
                                 (FZV408-INDIC-AGENT-SESSN-MAP)                  
-           FE213A-TOTAL-ENCAI-RECPR                                             
-                                (FZV408-INDIC-AGENT-SESSN-MAP)                  
+!          FE213A-TOTAL-ENCAI-RECPR                                             
+!                               (FZV408-INDIC-AGENT-SESSN-MAP)                  
            FE213A-TOTAL-ENCAI-INTRB                                             
                                 (FZV408-INDIC-AGENT-SESSN-MAP))                 
            OUTPUT DATA IS ERASE.                                                
@@ -245,7 +249,7 @@ DEFINE SUBROUTINE PREPAFFI.
 !                                                                               
    IF FZV408-INDIC-SUIV-PEROPE = ZEROES                                         
    DO.                                                                          
-   CALL FIRSTPER.                                                            
+      CALL FIRSTPER.                                                            
       ACCEPT DB-KEY INTO FZV408-DB-KEY-PEROPE FROM CSER-PEROPE                  
                     NEXT CURRENCY.                                              
       IF  PEROPE-NO-PERIO > 01                                                  
@@ -619,9 +623,13 @@ DEFINE SUBROUTINE CHA-AGEN.
    MOVE SESCAI-NO-SESSN-CAISS  TO                                               
                     FZV408-NO-SESSN-CAISS(FZV408-INDIC-AGENT-SESSN).            
 !                                                                               
+!  COMPUTE FZV408-NET-PERCU(FZV408-INDIC-AGENT-SESSN) =                         
+!          SESCAI-CUMUL-ENCAI + SESCAI-CUMUL-ENCAI-RECPR -                      
+!                               SESCAI-CUMUL-DECAI.                             
+                                                                                
    COMPUTE FZV408-NET-PERCU(FZV408-INDIC-AGENT-SESSN) =                         
-           SESCAI-CUMUL-ENCAI + SESCAI-CUMUL-ENCAI-RECPR -                      
-                                SESCAI-CUMUL-DECAI.                             
+           SESCAI-CUMUL-ENCAI - SESCAI-CUMUL-DECAI.                             
+                                                                                
 !                                                                               
    MOVE SESCAI-CUMUL-DEPOT-INTRN TO                                             
                     FZV408-CUMUL-DEPOT-INTRN(FZV408-INDIC-AGENT-SESSN).         
@@ -648,8 +656,8 @@ DEFINE SUBROUTINE CHA-AGEN.
    ADD ABS-VAL(FZV408-TOTAL-ECART-CAISS(FZV408-INDIC-AGENT-SESSN)) TO           
                FZV408-TOTAL-ECART-CSER.                                         
 !                                                                               
-   MOVE    SESCAI-CUMUL-ENCAI-RECPR   TO FZV408-TOTAL-ENCAI-RECPR               
-                                        (FZV408-INDIC-AGENT-SESSN).             
+!  MOVE    SESCAI-CUMUL-ENCAI-RECPR   TO FZV408-TOTAL-ENCAI-RECPR               
+!                                       (FZV408-INDIC-AGENT-SESSN).             
    MOVE    SESCAI-MNT-TX-INTRB        TO FZV408-TOTAL-ENCAI-INTRB               
                                         (FZV408-INDIC-AGENT-SESSN).             
 !                                                                               
@@ -675,8 +683,8 @@ DEFINE SUBROUTINE CHA-AGEN.
        FE213A-GR-CUMUL-DEPOT-INTRN.                                             
    ADD FZV408-TOTAL-ECART-CAISS(FZV408-INDIC-AGENT-SESSN)          TO           
        FE213A-GR-TOTAL-ECART-CAISS.                                             
-   ADD FZV408-TOTAL-ENCAI-RECPR(FZV408-INDIC-AGENT-SESSN)          TO           
-       FE213A-GR-TOTAL-ENCAI-RECPR.                                             
+!  ADD FZV408-TOTAL-ENCAI-RECPR(FZV408-INDIC-AGENT-SESSN)          TO           
+!      FE213A-GR-TOTAL-ENCAI-RECPR.                                             
    ADD FZV408-TOTAL-ENCAI-INTRB(FZV408-INDIC-AGENT-SESSN)          TO           
        FE213A-GR-TOTAL-ENCAI-INTRB.                                             
 !                                                                               
@@ -747,7 +755,7 @@ DEFINE SUBROUTINE REM-PANO.
                   FE213A-NET-PERCU          (FZV408-INDIC-1)                    
                   FE213A-CUMUL-DEPOT-INTRN  (FZV408-INDIC-1)                    
                   FE213A-TOTAL-ECART-CAISS  (FZV408-INDIC-1)                    
-                  FE213A-TOTAL-ENCAI-RECPR  (FZV408-INDIC-1)                    
+!                 FE213A-TOTAL-ENCAI-RECPR  (FZV408-INDIC-1)                    
                   FE213A-TOTAL-ENCAI-INTRB  (FZV408-INDIC-1))                   
                   OUTPUT DATA IS YES.                                           
       ADD  1  TO  FZV408-INDIC-1.                                               
@@ -820,7 +828,7 @@ DEFINE SUBROUTINE REM-PANO.
                FE213A-GR-NET-PERCU                                              
                FE213A-GR-CUMUL-DEPOT-INTRN                                      
                FE213A-GR-TOTAL-ECART-CAISS                                      
-               FE213A-GR-TOTAL-ENCAI-RECPR                                      
+!              FE213A-GR-TOTAL-ENCAI-RECPR                                      
                FE213A-GR-TOTAL-ENCAI-INTRB)                                     
           OUTPUT DATA IS YES.                                                   
 !                                                                               
@@ -1052,7 +1060,7 @@ DEFINE SUBROUTINE INITMES2.
       IF  FZV408-INDIC-PRES-TEXTE-ECART  =  'X'                                 
       DO.                                                                       
           MODIFY MAP PERMANENT FOR ALL BUT                                      
-                    (FE213A-INDIC-CONSL-INTRB                                   
+                   (FE213A-INDIC-CONSL-INTRB                                   
                      FE213A-INDIC-CONSL-EXPLI)                                  
                      ATTRIBUTES PROTECT.                                        
       END.                                                                      
@@ -1392,4 +1400,4 @@ DEFINE SUBROUTINE IDMSSTAT.
    MOVE 'GFPP466A'          TO  GZC000-NOM-PGM-APELE.                           
 !                                                                               
    GOBACK.                                                                      
-!                                                                               
+!                                                                               		 
