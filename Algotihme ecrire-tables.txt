@@ -1,0 +1,35 @@
+Algorithme pour ecrire les tables prélèvements
+
+CONST QTD_COL = 3; 
+
+int qtd_prelev, qtd_lgn, ind_a, ind_b, ind_c; 
+double var_mnt_a, var_mnt_b, var_mnt_c; 
+date var_date_prelev_a, var_date_prelev_b, var_date_prelev_c; 
+
+BOUCLE_TABLE 
+
+	PERFORM IND_CALENDR FROM 1 BY 1 
+		UNTIL IND_CALNDR > QTD_LNH 
+		
+		IND_A = IND_CALNDR 
+		IND_B = IND_CALNDR + QTD_LNH 
+		IND_C = IND_ACLNDR + (2 * QTD_LNH) 
+		
+		VAR_DATE_A = PRELEV_DATE(IND_A) 
+		VAR_DATE_B = PRELEV_DATE(IND_B) 
+		
+		
+		VAR_MNT_A = PRELEV_MNT(IND_A) 
+		VAR_MNT_B = PRELEV_MNT(IND_B) 
+		
+		
+		IF QTD_PRELEV > 4 
+			VAR_DATE_C = PRELEV_DATE(IND_C) 
+			VAR_MNT_C = PRELEV_MNT(IND_C) 
+		END-IF 
+		
+		WRITE FILE 
+	END-PERFORM 
+
+END-BOUCLE_TABLE 
+
