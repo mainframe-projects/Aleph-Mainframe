@@ -1,0 +1,12 @@
+                                                                      
+                                            UNIQUE                    
+                                            REF(USER276/MASTREF)      
+     A          R AUTHREC                                             
+     A            AUTHID    R               REFFLD(ID) TEXT('ID')     
+     A            AUTHFNAM  R               REFFLD(NAME)              
+                                            TEXT('FIRST NAME')        
+                                            COLHDG('FIRST' 'NAME')    
+     A            AUTHLNAM  R               REFFLD(NAME)              
+                                            TEXT('LAST NAME')         
+                                            COLHDG('LAST' 'NAME')     
+     A          K AUTHID                                              

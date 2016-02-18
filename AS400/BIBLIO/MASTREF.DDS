@@ -1,0 +1,8 @@
+                                                                      
+     A          R MSTREC                                              
+     A            ID             5S 0       COLHDG('ID')              
+     A            NAME          32          COLHDG('NAME')            
+     A            NAMEEXT       64          COLHDG('NAME' 'EXT')      
+     A            ADDR          64          COLHDG('ADDRESS' 'LINE')  
+     A            PHONE         13          COLHDG('EDITED' 'PHONE')  
+     A            CDPOST         6          COLHDG('CODE' 'POSTAL')   

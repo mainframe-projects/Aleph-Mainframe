@@ -1,0 +1,11 @@
+                                                                      
+                                            UNIQUE                    
+                                            REF(USER276/MASTREF)      
+     A          R LANGREC                                             
+     A            LANGID    R               REFFLD(ID)                
+                                            TEXT('ID')                
+                                            COLHDG('ID')              
+     A            LANGNAM   R               REFFLD(NAME)              
+                                            TEXT('LANGUAGE')          
+                                            COLHDG('LANGUAGE')        
+     A          K LANGID                                              
