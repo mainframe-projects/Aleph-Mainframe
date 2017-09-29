@@ -1366,7 +1366,7 @@
            END-IF.
 
       * ----------------------------------------------
-      *  VERIFIER SI LE MINISTERE EST CIBLÉ.
+      *  VERIFIER SI LE MINISTERE EST CIBLÃ‰.
       * ----------------------------------------------
            MOVE VAT-SAGIP-ORGAN(1:4)   TO VAT-NO-MINISTERE.
       *
@@ -1666,7 +1666,7 @@
       *    GARANTIE. SI LE CODE DE TERMINAISON EGAL A
       *    11 OU 12 OU 13 OU 19 OU 20; L'ADHERENT EST
       *    EXEMPTE.
-      *    ADDITIONER +1 AU COMPTEUR, QUI SERA UTILISÉ
+      *    ADDITIONER +1 AU COMPTEUR, QUI SERA UTILISÃ‰
       *    POUR INSCRIRE LE RECORD DANS LA LISTE DE
       *    SORTIE.
       *    -------------------------------------------
